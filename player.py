@@ -8,3 +8,4 @@ class Player:
         self.position = 0
         self.is_jailed = False
         self.turns_jailed = 0
+        self.is_bankrupt = False
