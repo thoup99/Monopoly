@@ -19,10 +19,11 @@ class Monopoly:
 
         ]
 
-    def getPlayerNames(self, num) -> [Player]:
+    def getPlayerNames(self, num) -> list[Player]:
         players = []
         for x in range(num):
             players.append(Player(input(f"Enter player {x + 1}'s name: ")))
+        return players
 
     def incrementCurrentPlayer(self):
         self.current_player_index += 1
