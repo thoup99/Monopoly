@@ -30,6 +30,13 @@ class Monopoly:
         if self.current_player_index == self.num_players:
             self.current_player_index = 0
 
+    def movePlayer(self, player: Player, amount):
+        player.position += amount
+
+        #Checks for passing go and awards money
+        if player.position >= 40:
+            player.position -= 40
+            player.money += 200
 
     def doOneTurn(self):
         #Check for gameover
@@ -63,3 +70,6 @@ class Monopoly:
                 if doubles_rolled == 3:
                     current_player.is_jailed = True
                     break
+
+            #Since after each double you are allowed to purchase property all logic for that must remain inside this loop
+            self.movePlayer(current_player, self.dice_1.value + self.dice_2.value)
