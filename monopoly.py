@@ -38,6 +38,9 @@ class Monopoly:
             player.position -= 40
             player.money += 200
 
+    def checkPositionOnBoard(self, player: Player):
+        pass
+
     def doOneTurn(self):
         #Check for gameover
         if self.num_players - self.num_backrupt == 1:
@@ -73,3 +76,5 @@ class Monopoly:
 
             #Since after each double you are allowed to purchase property all logic for that must remain inside this loop
             self.movePlayer(current_player, self.dice_1.value + self.dice_2.value)
+
+            self.checkPositionOnBoard(current_player)
