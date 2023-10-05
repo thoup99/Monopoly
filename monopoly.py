@@ -30,6 +30,14 @@ class Monopoly:
         if self.current_player_index == self.num_players:
             self.current_player_index = 0
 
+    def jailPlayer(self, player: Player):
+        player.position = 10
+        player.is_jailed = True
+        player.turns_jailed = 0
+
+    def freePlayer(self, player: Player):
+        player.is_jailed = False
+
     def movePlayer(self, player: Player, amount):
         player.position += amount
 
@@ -69,9 +77,13 @@ class Monopoly:
                 loop_again = True
                 doubles_rolled += 1
 
+                #Frees player if jailed
+                if player.is_jailed:
+                    self.freePlayer(current_player)
+
                 #Jails player if they roll 3 doubles in one turn
                 if doubles_rolled == 3:
-                    current_player.is_jailed = True
+                    self.jailPlayer(current_player)
                     break
 
             #Since after each double you are allowed to purchase property all logic for that must remain inside this loop
