@@ -1,5 +1,8 @@
 from dice import Dice
-from ownable_tile import OwnableTile
+from tiles.chance_tile import ChanceTile
+from tiles.community_chest_tile import CommunityChestTile
+from tiles.ownable_tile import OwnableTile
+from tiles.tax_tile import TaxTile
 from player import Player
 
 class Monopoly:
@@ -19,12 +22,12 @@ class Monopoly:
         self.board = [
             None,
             OwnableTile("Mediterranean Avenue", "Brown", 60, [2, 10, 30, 90, 160, 250], 50, 30),
-            None,
+            CommunityChestTile(),
             OwnableTile("Baltic Avenue", "Brown", 60, [4, 20, 60, 180, 320, 450], 50, 30),
-            None,
+            TaxTile("Income Tax", 200),
             OwnableTile("Reading Railroad", "Railroad", 200, [25, 50, 100, 200], -1, 100, is_standard_property = False),
             OwnableTile("Oriental Avenue", "Light Blue", 100, [6, 30, 90, 270, 400, 550], 50, 50),
-            None,
+            ChanceTile(),
             OwnableTile("Vermont Avenue", "Light Blue", 100, [6, 30, 90, 270, 400, 550], 50, 50),
             OwnableTile("Oriental Avenue", "Light Blue", 120, [4, 100, 300, 450, 600], 50, 60),
             None,
@@ -34,12 +37,12 @@ class Monopoly:
             OwnableTile("Virginia Avenue", "Pink", 160, [12, 60, 180, 500, 700, 900], 100, 80),
             OwnableTile("Pennsylvania Railroad", "Railroad", 200, [25, 50, 100, 200], -1, 100, is_standard_property = False),
             OwnableTile("St. James Place", "Orange", 180, [14, 70, 200, 550, 750, 950], 100, 90),
-            None,
+            CommunityChestTile(),
             OwnableTile("Tennessee Avenue", "Orange", 180, [14, 70, 200, 550, 750, 950], 100, 90),
             OwnableTile("New York Avenue", "Orange", 200, [16, 80, 220, 600, 800, 1000], 100, 100),
             None,
             OwnableTile("Kentucky Avenue", "Red",  220, [18, 36, 90, 250, 700, 875, 1050], 150, 110),
-            None,
+            ChanceTile(),
             OwnableTile("Indiana Avenue", "Red", 220, [18, 90, 250, 700, 875, 1050], 150, 110),
             OwnableTile("Illinois Avenue", "Red",  240, [20, 100, 300, 750, 925, 1100], 150, 120),
             OwnableTile("B. &. O. Railroad", "Railroad", 200, [25, 50, 100, 200], -1, 100, is_standard_property = False),
@@ -50,12 +53,12 @@ class Monopoly:
             None,
             OwnableTile("Pacific Avenue", "Green", 300, [26, 130, 390, 900, 1100, 1275], 200, 150),
             OwnableTile("North Carolina Avenue", "Green", 300, [26, 130, 390, 900, 1100, 1275], 200, 150),
-            None,
+            CommunityChestTile(),
             OwnableTile("Pennsylvania Avenue", "Green", 320, [28, 150, 450, 1000, 1200, 1400], 200, 160),
             OwnableTile("Short Line", "Railroad", 200, [25, 50, 100, 200], -1, 100, is_standard_property = False),
-            None,
+            ChanceTile(),
             OwnableTile("Park Place", "Dark Blue", 350, [35, 175, 500, 1100, 1300, 1500], 200, 175),
-            None,
+            TaxTile("Luxury Tax", 100),
             OwnableTile("Boardwalk", "Dark Blue", 400, [50, 200, 600, 1400, 1700, 2000], 200, 200)
         ]
 
