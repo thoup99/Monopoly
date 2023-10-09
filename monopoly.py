@@ -14,7 +14,7 @@ class Monopoly:
         self.current_player_index = 0
 
         self.num_players = num_players
-        self.num_backrupt = 0
+        self.num_bankrupt = 0
 
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
@@ -89,16 +89,65 @@ class Monopoly:
             player.position -= 40
             player.money += 200
 
+    def transferPlayerBelongings(self, player: Player):
+        tile = self.board[player.position]
+        if isinstance(tile, OwnableTile):
+            #Transfers all property
+            for property in player.propery:
+                tile.owner.propery.append(property)
+
+    def checkIfPlayerBankrupt(self, player: Player):
+        if player.money < 0:
+            print("less than 0")
+            player.is_bankrupt = True
+            self.num_bankrupt
+            self.transferPlayerBelongings(player)
+            return True
+        return False
+
     def checkPositionOnBoard(self, player: Player):
-        pass
+        tile = self.board[player.position]
+        if isinstance(tile, OwnableTile):
+
+            #Tile has no owner
+            if tile.isOwned() == False:
+                if player.money > tile.cost:
+                    answer = input(f"Would you like to purchase {tile.name} for {tile.cost}?")
+                    if answer == "y":
+                        tile.setOwner(player)
+                        player.money -= tile.cost
+                    else:
+                        print(f"You gave up on purchasing {tile.name}")
+                else:
+                    print(f"{player.name} Can not afford to purchase {tile.name} for {tile.cost}")
+            
+            #Tile has an owner
+            elif tile.owner != player:
+                #Does not account for the player going into negatives while paying
+                print(f"{player} payed {tile.owner} ${tile.determineRent()} in rent for landing on {tile.name}.")
+                tile.owner.money += tile.determineRent()
+                player.money -= tile.determineRent()
+
+        elif isinstance(tile, ChanceTile):
+            tile.grabRandomCard(player)
+
+        elif isinstance(tile, CommunityChestTile):
+            tile.grabRandomCard(player)
+
+        elif isinstance(tile, TaxTile):
+            tile.chargeTax(player)
+
+        else:
+            print("Corner Tile")
 
     def doOneTurn(self):
         #Check for gameover
-        if self.num_players - self.num_backrupt == 1:
+        if self.num_players - self.num_bankrupt == 1:
             for player in self.players:
                 if not player.is_bankrupt:
                     self.winner = player
                     self.game_over = True
+                    print(f"{self.winner} Won the Game!")
                     return
                 
         #If the current player is bankrupt go to the next one
@@ -114,6 +163,7 @@ class Monopoly:
         while loop_again:
             loop_again = False
             Dice.roll_all()
+            print(f"{current_player.name} rolled a {Dice.total}!")
 
             # Handles doubles
             if self.dice_1 == self.dice_2:
@@ -121,7 +171,7 @@ class Monopoly:
                 doubles_rolled += 1
 
                 #Frees player if jailed
-                if player.is_jailed:
+                if current_player.is_jailed:
                     self.freePlayer(current_player)
 
                 #Jails player if they roll 3 doubles in one turn
@@ -130,6 +180,16 @@ class Monopoly:
                     break
 
             #Since after each double you are allowed to purchase property all logic for that must remain inside this loop
+            print("Moving player")
             self.movePlayer(current_player, self.dice_1.value + self.dice_2.value)
 
+            print("checking position")
             self.checkPositionOnBoard(current_player)
+
+            print("checking for bankrupt")
+            print(f"{current_player.name}: {current_player.money}")
+            if self.checkIfPlayerBankrupt(current_player):
+                print(f"{current_player.name} has gone bankrupt!")
+                break
+            print("Done")
+        self.incrementCurrentPlayer()

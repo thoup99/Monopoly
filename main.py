@@ -18,9 +18,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    monopoly.doOneTurn()
+    if not monopoly.game_over:
+        monopoly.doOneTurn()
 
     if monopoly.game_over:
         running = False
 
     pygame.display.update()
+
+pygame.quit()
