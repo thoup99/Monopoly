@@ -94,7 +94,7 @@ class Monopoly:
         if isinstance(tile, OwnableTile):
             #Transfers all property
             for property in player.propery:
-                tile.owner.propery.append(property)
+                property.setOwner(player)
 
     def checkIfPlayerBankrupt(self, player: Player):
         if player.money < 0:
@@ -124,9 +124,11 @@ class Monopoly:
             #Tile has an owner
             elif tile.owner != player:
                 #Does not account for the player going into negatives while paying
-                print(f"{player} payed {tile.owner} ${tile.determineRent()} in rent for landing on {tile.name}.")
-                tile.owner.money += tile.determineRent()
-                player.money -= tile.determineRent()
+                rent = tile.determineRent()
+                print("Pay rent monkey boy")
+                print(f"{player} paid {tile.owner} ${rent} in rent for landing on {tile.name}.")
+                tile.owner.money += rent
+                player.money -= rent
 
         elif isinstance(tile, ChanceTile):
             tile.grabRandomCard(player)
