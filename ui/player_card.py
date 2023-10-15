@@ -12,5 +12,5 @@ class PlayerCard:
         Renderer.elements.append(self)
 
     def render(self, screen: pygame.surface.Surface):
-        text_surface = PlayerCard.font.render(f"{self.player.name}: ${self.player.money}", False, (255,255,255))
+        text_surface = PlayerCard.font.render(f"{self.player.name}: ${self.player.money}", True, (255,255,255))
         screen.blit(text_surface, (self.x, self.y))
