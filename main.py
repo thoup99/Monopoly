@@ -45,8 +45,9 @@ for x, player in enumerate(monopoly.players):
 
 running = True
 clock = pygame.time.Clock()
-fps = 60
+fps = 30
 while running:
+    clock.tick(fps)
     get_input()
 
     if not monopoly.game_over:
