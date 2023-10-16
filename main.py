@@ -34,6 +34,8 @@ SCREEN_HEIGHT = 800
 
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Monopoly")
+
+
 renderer = Renderer(canvas)
 Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 

@@ -6,6 +6,13 @@ from tiles.tax_tile import TaxTile
 from player import Player
 
 class Monopoly:
+    states = {
+        "PLAYER_COUNT", 0,
+        "NAME_SELECTION", 1,
+        "ROLLING_DICE", 2,
+        "BUYING",3
+    }
+
     def __init__(self, num_players) -> None:
         self.game_over = False
         self.winner = None
@@ -18,6 +25,8 @@ class Monopoly:
 
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
+
+        self.state = Monopoly.states["PLAYER_COUNT"]
 
         self.board = [
             None,
