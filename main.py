@@ -1,4 +1,5 @@
 import pygame
+from input import Input
 pygame.init()
 
 import sys
@@ -7,18 +8,10 @@ from renderer import Renderer
 from ui.player_card import PlayerCard
 from ui.board import Board
 
-
-def get_input():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+def check_keys(key):
+    match (key):
+        case(pygame.K_ESCAPE):
             close_game()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            match (event.key):
-                case(pygame.K_ESCAPE):
-                    close_game()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                MOUSEDOWN = True
 
 def close_game():
     global running
@@ -27,6 +20,8 @@ def close_game():
     pygame.mixer.quit()
     sys.exit()
 
+Input.subscribe(pygame.QUIT, close_game)
+Input.subscribe(pygame.KEYDOWN, check_keys)
   
 # Create Canvas
 SCREEN_WIDTH = 1200
@@ -50,7 +45,7 @@ clock = pygame.time.Clock()
 fps = 30
 while running:
     clock.tick(fps)
-    get_input()
+    Input.get_inputs()
 
     if not monopoly.game_over:
         pass

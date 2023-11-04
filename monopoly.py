@@ -26,8 +26,6 @@ class Monopoly:
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
 
-        self.state = Monopoly.states["PLAYER_COUNT"]
-
         self.board = [
             None,
             OwnableTile("Mediterranean Avenue", "Brown", 60, [2, 10, 30, 90, 160, 250], 50, 30),
