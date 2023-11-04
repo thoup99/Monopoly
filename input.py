@@ -6,7 +6,7 @@ class Input:
         pygame.KEYUP: [],
         pygame.QUIT: [],
         pygame.MOUSEMOTION: [],
-        pygame.MOUSEBUTTONDOWN: []
+        pygame.MOUSEBUTTONDOWN: [],
     }
 
     def get_inputs():
@@ -23,7 +23,13 @@ class Input:
     def publish(event: pygame.event.Event):
         for callback in Input.subscribers[event.type]:
             if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                callback(event.key)
+                callback(event.key, event.unicode)
+
+            elif(event.type == pygame.MOUSEMOTION):
+                callback(event.pos)
+
+            elif(event.type == pygame.MOUSEBUTTONDOWN):
+                callback(event.button, event.pos)
                 
-            if event.type == pygame.QUIT:
+            elif event.type == pygame.QUIT:
                 callback()
