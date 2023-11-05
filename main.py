@@ -9,6 +9,7 @@ from ui.player_card import PlayerCard
 from ui.board import Board
 from ui.button import Button
 from ui.entrybox import EntryBox
+from ui.button_array import ButtonArray
 
 def check_keys(key, unicode):
     match (key):
@@ -38,6 +39,11 @@ renderer = Renderer(canvas)
 Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 monopoly = Monopoly(2)
+
+def print_id(num):
+    print(num)
+
+ButtonArray("Select a Button", ["To be"], print_id)
 
 #Creates a player card for each player
 for x, player in enumerate(monopoly.players):
