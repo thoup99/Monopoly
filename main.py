@@ -40,11 +40,6 @@ Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 monopoly = Monopoly(2)
 
-def print_id(num):
-    print(num)
-
-ButtonArray("Select a Button", ["To be"], print_id)
-
 #Creates a player card for each player
 for x, player in enumerate(monopoly.players):
     PlayerCard(player, x)
@@ -57,7 +52,14 @@ while running:
     Input.get_inputs()
 
     if not monopoly.game_over:
-        pass
+        if monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
+            ButtonArray("How many Players?", ["1", "2", "3", "4"], monopoly.setPlayerNumber)
+            monopoly.state = Monopoly.PLAYER_COUNT
+
+        elif monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
+            print(monopoly.num_players)
+            monopoly.state = Monopoly.PLAYER_COUNT
+
 
     if monopoly.game_over:
         running = False

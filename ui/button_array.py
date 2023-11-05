@@ -6,6 +6,7 @@ class ButtonArray:
     font = pygame.font.SysFont('Arial', 60)
 
     def __init__(self, text: str, options: list[str], callback) -> None:
+        self.callback = callback
         
         self.background_surface = pygame.Surface((1200, 800))
         self.background_surface.set_alpha(128)
@@ -29,8 +30,21 @@ class ButtonArray:
             far_left = centerx - (width + white_space) * (num_options // 2)
         
         for num, option in enumerate(options):
-            self.buttons.append(Button(option, far_left + (width + white_space) * num, 450, num, callback))
+            self.buttons.append(Button(option, far_left + (width + white_space) * num, 450, num, self.do_callback))
 
+    def __del__(self):
+        try:
+            Renderer.elements.remove(self)
+            for button in self.buttons:
+                button.__del__()
+        except ValueError:
+            pass
+        
+
+    def do_callback(self, id):
+        self.callback(id)
+        print(id)
+        self.__del__()
 
     def render(self, screen: pygame.surface.Surface):
         screen.blit(self.background_surface, (0,0))

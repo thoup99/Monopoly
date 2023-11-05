@@ -28,6 +28,13 @@ class EntryBox:
         Renderer.elements.append(self)
         Input.subscribe(pygame.KEYDOWN, self.handle_input)
 
+    def __del__(self):
+        try:
+            Input.unsubscribe(pygame.KEYDOWN, self.handle_input)
+            Renderer.elements.remove(self)
+        except ValueError:
+            pass
+
 
     def handle_input(self, key, unicode: str):
         if key == pygame.K_RETURN and len(self.entered_text) > 0:

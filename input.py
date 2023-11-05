@@ -18,7 +18,7 @@ class Input:
         Input.subscribers[event].append(callback)
 
     def unsubscribe(event: pygame.event.Event.type, callback):
-        Input.subscribers[event].pop(callback)
+        Input.subscribers[event].remove(callback)
 
     def publish(event: pygame.event.Event):
         for callback in Input.subscribers[event.type]:

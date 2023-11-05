@@ -3,17 +3,23 @@ from tiles.chance_tile import ChanceTile
 from tiles.community_chest_tile import CommunityChestTile
 from tiles.ownable_tile import OwnableTile
 from tiles.tax_tile import TaxTile
+
+
 from player import Player
 
 class Monopoly:
-    PLAYER_COUNT = 0
-    NAME_SELCTION = 1
-    ROLLING_DICE = 2
-    BUYING = 3
+    MAKE_PLAYER_COUNT = 0
+    PLAYER_COUNT = 1
+    MAKE_NAME_SELECTION = 2
+    NAME_SELCTION = 3
+    ROLLING_DICE = 4
+    BUYING = 5
 
     def __init__(self, num_players) -> None:
         self.game_over = False
         self.winner = None
+
+        self.state = Monopoly.MAKE_PLAYER_COUNT
 
         self.players = self.getPlayerNames(num_players)
         self.current_player_index = 0
@@ -66,6 +72,10 @@ class Monopoly:
             TaxTile("Luxury Tax", 100),
             OwnableTile("Boardwalk", "Dark Blue", 400, [50, 200, 600, 1400, 1700, 2000], 200, 200)
         ]
+    
+    def setPlayerNumber(self, num):
+        self.num_players = num + 1
+        self.state = Monopoly.MAKE_NAME_SELECTION
 
     def getPlayerNames(self, num) -> list[Player]:
         players = []

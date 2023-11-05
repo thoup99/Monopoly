@@ -25,7 +25,14 @@ class Button:
         Renderer.elements.append(self)
         Input.subscribe(pygame.MOUSEBUTTONDOWN, self.check_click)
 
-    def check_mouse_in(self, position): ##NEEDS UPDATED
+    def __del__(self):
+        try:
+            Renderer.elements.remove(self)
+            Input.unsubscribe(pygame.MOUSEBUTTONDOWN, self.check_click)
+        except ValueError:
+            pass
+
+    def check_mouse_in(self, position):
         return self.image_rect.collidepoint(position[0], position[1])
 
     def check_click(self, button, position):
