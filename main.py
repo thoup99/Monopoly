@@ -49,19 +49,19 @@ while running:
 
     if not monopoly.game_over:
         if monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
-            ButtonArray("How many Players?", ["1", "2", "3", "4"], monopoly.setPlayerNumber)
-            monopoly.state = Monopoly.PLAYER_COUNT
+            ButtonArray("How many Players?", ["2", "3", "4"], monopoly.setPlayerNumber)
+            monopoly.setState(Monopoly.PLAYER_COUNT)
 
         elif monopoly.state == Monopoly.MAKE_NAME_SELECTION:
             player_num = len(monopoly.player_names) + 1
             EntryBox(f"Enter Player {player_num}'s Name:", monopoly.appendPlayerName)
-            monopoly.state = Monopoly.NAME_SELCTION
+            monopoly.setState(Monopoly.NAME_SELCTION)
 
-        elif monopoly.state == Monopoly.CREATE_PLAYER_CARD:
+        elif monopoly.state == Monopoly.CREATE_PLAYER_CARDS:
             monopoly.createPlayers()
             for x, player in enumerate(monopoly.players):
                 PlayerCard(player, x)
-            monopoly.state = Monopoly.ROLLING_DICE
+            monopoly.setState(Monopoly.ROLLING_DICE)
 
 
     if monopoly.game_over:

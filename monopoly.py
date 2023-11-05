@@ -12,7 +12,7 @@ class Monopoly:
     PLAYER_COUNT = 1
     MAKE_NAME_SELECTION = 2
     NAME_SELCTION = 3
-    CREATE_PLAYER_CARD = 4
+    CREATE_PLAYER_CARDS = 4
     ROLLING_DICE = 5
     BUYING = 6
 
@@ -76,17 +76,20 @@ class Monopoly:
             OwnableTile("Boardwalk", "Dark Blue", 400, [50, 200, 600, 1400, 1700, 2000], 200, 200)
         ]
     
+    def setState(self, state):
+        self.state = state
+
     def setPlayerNumber(self, num):
-        self.num_players = num
-        self.state = Monopoly.MAKE_NAME_SELECTION
+        self.num_players = num + 1
+        self.setState(Monopoly.MAKE_NAME_SELECTION)
 
     def appendPlayerName(self, name):
         self.player_names.append(name)
 
         if len(self.player_names) != self.num_players:
-            self.state = Monopoly.MAKE_NAME_SELECTION
+            self.setState(Monopoly.MAKE_NAME_SELECTION)
         else:
-            self.state = Monopoly.CREATE_PLAYER_CARD
+            self.setState(Monopoly.CREATE_PLAYER_CARDS)
 
     def createPlayers(self):
         for name in self.player_names:

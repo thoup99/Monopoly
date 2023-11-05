@@ -25,21 +25,21 @@ class EntryBox:
         self.entry_rect = self.entry_surface.get_rect()
         self.entry_rect.center = (600, 400 + 30)
 
-        Renderer.elements.append(self)
+        Renderer.addElement(self)
         Input.subscribe(pygame.KEYDOWN, self.handleInput)
 
     def __del__(self):
         print("Deleting Entry Box")
 
 
-    def removeReferences(self):
+    def destroy(self):
+        Renderer.removeElement(self)
         Input.unsubscribe(pygame.KEYDOWN, self.handleInput)
-        Renderer.elements.remove(self)
 
     def handleInput(self, key, unicode: str):
         if key == pygame.K_RETURN and len(self.entered_text) > 0:
             self.callback(self.entered_text)
-            self.removeReferences()
+            self.destroy()
 
         elif key == pygame.K_BACKSPACE and len(self.entered_text) > 0:
             self.entered_text = self.entered_text[:-1]

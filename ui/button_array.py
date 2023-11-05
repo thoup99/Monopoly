@@ -18,7 +18,7 @@ class ButtonArray:
 
         self.buttons = []
 
-        Renderer.elements.append(self)
+        Renderer.addElement(self)
 
         num_options = len(options)
         centerx = 600
@@ -35,17 +35,16 @@ class ButtonArray:
     def __del__(self):
         print("Deleting Button Array")
 
-    def remove_references(self):
-        Renderer.elements.remove(self)
+    def destroy(self):
+        Renderer.removeElement(self)
         for button in self.buttons:
-            button.removeReferences()
+            button.destroy()
         del self.buttons
         
 
     def do_callback(self, id):
         self.callback(id)
-        print(id)
-        self.remove_references()
+        self.destroy()
 
     def render(self, screen: pygame.surface.Surface):
         screen.blit(self.background_surface, (0,0))

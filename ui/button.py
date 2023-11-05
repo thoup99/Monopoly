@@ -22,14 +22,14 @@ class Button:
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.centerx, self.text_rect.centery = self.image_rect.center
 
-        Renderer.elements.append(self)
+        Renderer.addElement(self)
         Input.subscribe(pygame.MOUSEBUTTONDOWN, self.checkClick)
 
     def __del__(self):
         print("Deleting Button")
 
-    def removeReferences(self):
-        Renderer.elements.remove(self)
+    def destroy(self):
+        Renderer.removeElement(self)
         Input.unsubscribe(pygame.MOUSEBUTTONDOWN, self.checkClick)
 
     def checkMouseIn(self, position):

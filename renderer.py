@@ -7,6 +7,12 @@ class Renderer:
         self.screen = screen
         self.color = (32, 150, 65)
 
+    def addElement(element):
+        Renderer.elements.append(element)
+
+    def removeElement(element):
+        Renderer.elements.remove(element)
+
     def renderAll(self):
         self.screen.fill(self.color)
 
