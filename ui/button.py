@@ -23,20 +23,20 @@ class Button:
         self.text_rect.centerx, self.text_rect.centery = self.image_rect.center
 
         Renderer.elements.append(self)
-        Input.subscribe(pygame.MOUSEBUTTONDOWN, self.check_click)
+        Input.subscribe(pygame.MOUSEBUTTONDOWN, self.checkClick)
 
     def __del__(self):
-        try:
-            Renderer.elements.remove(self)
-            Input.unsubscribe(pygame.MOUSEBUTTONDOWN, self.check_click)
-        except ValueError:
-            pass
+        print("Deleting Button")
 
-    def check_mouse_in(self, position):
+    def removeReferences(self):
+        Renderer.elements.remove(self)
+        Input.unsubscribe(pygame.MOUSEBUTTONDOWN, self.checkClick)
+
+    def checkMouseIn(self, position):
         return self.image_rect.collidepoint(position[0], position[1])
 
-    def check_click(self, button, position):
-        if self.is_active and button == 1 and self.check_mouse_in(position):
+    def checkClick(self, button, position):
+        if self.is_active and button == 1 and self.checkMouseIn(position):
             self.callback(self.id)
 
     def render(self, screen: pygame.surface.Surface):

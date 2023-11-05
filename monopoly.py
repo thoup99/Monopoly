@@ -12,19 +12,22 @@ class Monopoly:
     PLAYER_COUNT = 1
     MAKE_NAME_SELECTION = 2
     NAME_SELCTION = 3
-    ROLLING_DICE = 4
-    BUYING = 5
+    CREATE_PLAYER_CARD = 4
+    ROLLING_DICE = 5
+    BUYING = 6
 
-    def __init__(self, num_players) -> None:
+    def __init__(self) -> None:
         self.game_over = False
         self.winner = None
 
+        self.player_names = []
+
         self.state = Monopoly.MAKE_PLAYER_COUNT
 
-        self.players = self.getPlayerNames(num_players)
+        self.players = []
         self.current_player_index = 0
 
-        self.num_players = num_players
+        self.num_players = -1
         self.num_bankrupt = 0
 
         self.dice_1 = Dice(6)
@@ -74,8 +77,20 @@ class Monopoly:
         ]
     
     def setPlayerNumber(self, num):
-        self.num_players = num + 1
+        self.num_players = num
         self.state = Monopoly.MAKE_NAME_SELECTION
+
+    def appendPlayerName(self, name):
+        self.player_names.append(name)
+
+        if len(self.player_names) != self.num_players:
+            self.state = Monopoly.MAKE_NAME_SELECTION
+        else:
+            self.state = Monopoly.CREATE_PLAYER_CARD
+
+    def createPlayers(self):
+        for name in self.player_names:
+           self.players.append(Player(name))
 
     def getPlayerNames(self, num) -> list[Player]:
         players = []

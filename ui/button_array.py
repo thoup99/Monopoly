@@ -30,21 +30,22 @@ class ButtonArray:
             far_left = centerx - (width + white_space) * (num_options // 2)
         
         for num, option in enumerate(options):
-            self.buttons.append(Button(option, far_left + (width + white_space) * num, 450, num, self.do_callback))
+            self.buttons.append(Button(option, far_left + (width + white_space) * num, 450, num + 1, self.do_callback))
 
     def __del__(self):
-        try:
-            Renderer.elements.remove(self)
-            for button in self.buttons:
-                button.__del__()
-        except ValueError:
-            pass
+        print("Deleting Button Array")
+
+    def remove_references(self):
+        Renderer.elements.remove(self)
+        for button in self.buttons:
+            button.removeReferences()
+        del self.buttons
         
 
     def do_callback(self, id):
         self.callback(id)
         print(id)
-        self.__del__()
+        self.remove_references()
 
     def render(self, screen: pygame.surface.Surface):
         screen.blit(self.background_surface, (0,0))

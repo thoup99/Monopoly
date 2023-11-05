@@ -38,11 +38,7 @@ pygame.display.set_caption("Monopoly")
 renderer = Renderer(canvas)
 Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-monopoly = Monopoly(2)
-
-#Creates a player card for each player
-for x, player in enumerate(monopoly.players):
-    PlayerCard(player, x)
+monopoly = Monopoly()
 
 running = True
 clock = pygame.time.Clock()
@@ -56,9 +52,16 @@ while running:
             ButtonArray("How many Players?", ["1", "2", "3", "4"], monopoly.setPlayerNumber)
             monopoly.state = Monopoly.PLAYER_COUNT
 
-        elif monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
-            print(monopoly.num_players)
-            monopoly.state = Monopoly.PLAYER_COUNT
+        elif monopoly.state == Monopoly.MAKE_NAME_SELECTION:
+            player_num = len(monopoly.player_names) + 1
+            EntryBox(f"Enter Player {player_num}'s Name:", monopoly.appendPlayerName)
+            monopoly.state = Monopoly.NAME_SELCTION
+
+        elif monopoly.state == Monopoly.CREATE_PLAYER_CARD:
+            monopoly.createPlayers()
+            for x, player in enumerate(monopoly.players):
+                PlayerCard(player, x)
+            monopoly.state = Monopoly.ROLLING_DICE
 
 
     if monopoly.game_over:
