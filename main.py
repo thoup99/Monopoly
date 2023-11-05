@@ -7,6 +7,7 @@ from monopoly import Monopoly
 from renderer import Renderer
 from ui.player_card import PlayerCard
 from ui.board import Board
+from ui.entrybox import EntryBox
 
 def check_keys(key, unicode):
     match (key):
@@ -20,12 +21,9 @@ def close_game():
     pygame.mixer.quit()
     sys.exit()
 
-def print_teh_thing(event, position):
-    print(event, position)
 
 Input.subscribe(pygame.QUIT, close_game)
 Input.subscribe(pygame.KEYDOWN, check_keys) 
-Input.subscribe(pygame.MOUSEBUTTONDOWN, print_teh_thing)
   
 # Create Canvas
 SCREEN_WIDTH = 1200
