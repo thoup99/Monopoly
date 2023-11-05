@@ -5,7 +5,7 @@ from input import Input
 
 #NEEDS TESTED
 class Button:
-    font = pygame.font.SysFont('Arial', 30)
+    font = pygame.font.SysFont('Arial', 50)
 
     def __init__(self, text, center_x, center_y, id_num, callback) -> None:
         self.is_active = True
@@ -18,7 +18,7 @@ class Button:
         self.image_rect.centerx = center_x
         self.image_rect.centery = center_y
 
-        self.text_surface = Button.font.render(text, True, (255,255,255))
+        self.text_surface = Button.font.render(text, True, (0,0,0))
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.centerx, self.text_rect.centery = self.image_rect.center
 

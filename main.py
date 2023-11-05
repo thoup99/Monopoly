@@ -7,6 +7,7 @@ from monopoly import Monopoly
 from renderer import Renderer
 from ui.player_card import PlayerCard
 from ui.board import Board
+from ui.button import Button
 from ui.entrybox import EntryBox
 
 def check_keys(key, unicode):
