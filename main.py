@@ -59,8 +59,8 @@ while running:
 
         elif monopoly.state == Monopoly.CREATE_PLAYER_CARDS:
             monopoly.createPlayers()
-            for x, player in enumerate(monopoly.players):
-                PlayerCard(player, x)
+            for player in monopoly.players:
+                PlayerCard(player)
             monopoly.setState(Monopoly.ROLLING_DICE)
 
 

@@ -3,7 +3,6 @@ from renderer import Renderer
 from input import Input
 
 
-#NEEDS TESTED
 class EntryBox:
     big_font = pygame.font.SysFont('Arial', 60)
     font = pygame.font.SysFont('Arial', 50)

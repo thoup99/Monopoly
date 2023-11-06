@@ -5,9 +5,9 @@ from renderer import Renderer
 class PlayerCard:
     font = pygame.font.SysFont('Arial', 30)
 
-    def __init__(self, player: Player, player_num) -> None:
+    def __init__(self, player: Player) -> None:
         self.x = 20
-        self.y = 40 + 40 * player_num
+        self.y = 40 + 40 * player.number
         self.player = player
         Renderer.elements.append(self)
 

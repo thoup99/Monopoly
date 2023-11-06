@@ -92,14 +92,9 @@ class Monopoly:
             self.setState(Monopoly.CREATE_PLAYER_CARDS)
 
     def createPlayers(self):
-        for name in self.player_names:
-           self.players.append(Player(name))
+        for x, name in enumerate(self.player_names):
+           self.players.append(Player(name, x + 1))
 
-    def getPlayerNames(self, num) -> list[Player]:
-        players = []
-        for x in range(num):
-            players.append(Player(input(f"Enter player {x + 1}'s name: ")))
-        return players
 
     def incrementCurrentPlayer(self):
         self.current_player_index += 1
