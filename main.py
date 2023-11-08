@@ -1,5 +1,6 @@
 import pygame
 from input import Input
+from timer import Timer
 pygame.init()
 
 import sys
@@ -40,12 +41,18 @@ Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 monopoly = Monopoly()
 
+def timer_test():
+    print("Times Up")
+
+dice_timer = Timer(500, timer_test)
+
 running = True
 clock = pygame.time.Clock()
 fps = 30
 while running:
-    clock.tick(fps)
+    time = clock.tick(fps)
     Input.get_inputs()
+    Timer.tickTimers(time)
 
     if not monopoly.game_over:
         if monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
@@ -62,6 +69,7 @@ while running:
             for player in monopoly.players:
                 PlayerCard(player)
             monopoly.setState(Monopoly.ROLLING_DICE)
+            dice_timer.beginTicking()
 
 
     if monopoly.game_over:
