@@ -1,6 +1,6 @@
 import pygame
 from input import Input
-from timer import Timer
+from timers import Timer
 pygame.init()
 
 import sys
@@ -8,7 +8,6 @@ from monopoly import Monopoly
 from renderer import Renderer
 from ui.player_card import PlayerCard
 from ui.board import Board
-from ui.button import Button
 from ui.entrybox import EntryBox
 from ui.button_array import ButtonArray
 

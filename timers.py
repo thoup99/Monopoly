@@ -1,3 +1,5 @@
+
+
 class Timer:
     timers = []
 
@@ -29,7 +31,7 @@ class Timer:
             self.doCallback()
 
     def doCallback(self):
-        if self.arguement != None:
-            self.callback(self.arguement)
-        else:
+        if self.arguement == None:
             self.callback()
+        else:
+            self.callback(self.arguement)
