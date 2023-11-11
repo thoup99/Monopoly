@@ -5,7 +5,7 @@ from ui.button import Button
 class ButtonArray:
     font = pygame.font.SysFont('Arial', 60)
 
-    def __init__(self, text: str, options: list[str], callback) -> None:
+    def __init__(self, text: str, options, callback) -> None:
         self.callback = callback
         
         self.background_surface = pygame.Surface((1200, 800))
@@ -24,13 +24,15 @@ class ButtonArray:
         centerx = 600
         width = 192
         white_space = 40
+
+        ##Create Buttons
         if num_options % 2 == 0:
             far_left = centerx - ((width + white_space) / 2) * (num_options // 2)            
         else:
             far_left = centerx - (width + white_space) * (num_options // 2)
         
         for num, option in enumerate(options):
-            self.buttons.append(Button(option, far_left + (width + white_space) * num, 450, num + 1, self.do_callback))
+            self.buttons.append(Button(option[0], far_left + (width + white_space) * num, 450, self.do_callback, option[1]))
 
     def __del__(self):
         print("Deleting Button Array")
@@ -42,8 +44,8 @@ class ButtonArray:
         del self.buttons
         
 
-    def do_callback(self, id):
-        self.callback(id)
+    def do_callback(self, *args):
+        self.callback(*args)
         self.destroy()
 
     def render(self, screen: pygame.surface.Surface):

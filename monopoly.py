@@ -81,7 +81,7 @@ class Monopoly:
         self.state = state
 
     def setPlayerNumber(self, num):
-        self.num_players = num + 1
+        self.num_players = num
         self.setState(Monopoly.MAKE_NAME_SELECTION)
 
     def appendPlayerName(self, name):

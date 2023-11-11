@@ -55,7 +55,7 @@ while running:
 
     if not monopoly.game_over:
         if monopoly.state == Monopoly.MAKE_PLAYER_COUNT:
-            ButtonArray("How many Players?", ["2", "3", "4"], monopoly.setPlayerNumber)
+            ButtonArray("How many players?", [["2", 2], ["3", 3], ["4", 4]], monopoly.setPlayerNumber)
             monopoly.setState(Monopoly.PLAYER_COUNT)
 
         elif monopoly.state == Monopoly.MAKE_NAME_SELECTION:

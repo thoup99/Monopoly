@@ -7,10 +7,10 @@ from input import Input
 class Button:
     font = pygame.font.SysFont('Arial', 50)
 
-    def __init__(self, text, center_x, center_y, id_num, callback, destroy_on_click = False) -> None:
+    def __init__(self, text, center_x, center_y, callback, argument = None, destroy_on_click = False) -> None:
         self.is_active = True
         self.callback = callback
-        self.id = id_num
+        self.argument = argument
         self.destroy_on_click = destroy_on_click
 
         self.image = pygame.image.load("./images/button.png")
@@ -38,7 +38,11 @@ class Button:
 
     def checkClick(self, button, position):
         if self.is_active and button == 1 and self.checkMouseIn(position):
-            self.callback(self.id)
+            if self.argument != None:
+                self.callback(self.argument)
+            else:
+                self.callback()
+                
             if self.destroy_on_click:
                 self.destroy()
 
