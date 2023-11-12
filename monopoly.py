@@ -15,7 +15,8 @@ class Monopoly:
     CREATE_PLAYER_CARDS = 4
     ROLLING_DICE = 5
     TIMER = 6
-    BUYING = 7
+    OPEN_MENU = 7
+    BUYING = 8
 
     def __init__(self) -> None:
         self.game_over = False
@@ -96,8 +97,10 @@ class Monopoly:
         for x, name in enumerate(self.player_names):
            self.players.append(Player(name, x + 1))
 
-    def startTimer(self, seconds):
-        self.setState(Monopoly.TIMER)
+
+    def rollDice(self):
+        Dice.roll_all()
+
 
     def incrementCurrentPlayer(self):
         self.current_player_index += 1

@@ -3,7 +3,7 @@ from renderer import Renderer
 from input import Input
 
 
-#NEEDS TESTED
+
 class Button:
     font = pygame.font.SysFont('Arial', 50)
 

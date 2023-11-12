@@ -43,7 +43,7 @@ monopoly = Monopoly()
 def timer_test():
     print("Times Up")
 
-dice_timer = Timer(500, timer_test)
+dice_timer = Timer(1000, monopoly.setState, Monopoly.ROLLING_DICE)
 
 running = True
 clock = pygame.time.Clock()
@@ -67,8 +67,12 @@ while running:
             monopoly.createPlayers()
             for player in monopoly.players:
                 PlayerCard(player)
-            monopoly.setState(Monopoly.ROLLING_DICE)
+            
+            monopoly.setState(Monopoly.TIMER)
             dice_timer.beginTicking()
+        
+        elif monopoly.state == Monopoly.ROLLING_DICE:
+            monopoly.rollDice()
 
 
     if monopoly.game_over:
