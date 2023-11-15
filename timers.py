@@ -12,6 +12,9 @@ class Timer:
 
         Timer.timers.append(self)
 
+    def __del__(self):
+        print("Deleting Timer")
+
     def tickTimers(miliseconds):
         for timer in Timer.timers:
             if timer.isTicking:
@@ -23,6 +26,9 @@ class Timer:
 
     def setTime(self, miliseconds: float):
         self.time = miliseconds
+
+    def setArgument(self, value):
+        self.arguement = value
 
     def removeTime(self, miliseconds):
         self.time -= miliseconds

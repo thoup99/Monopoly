@@ -17,7 +17,7 @@ class Dice:
         Dice.total = 0
         for dice in Dice.all_dice:
             dice.roll()
-            Dice.total = dice.value
+            Dice.total += dice.value
     
     def __eq__(self, other) -> bool:
         if isinstance(other, Dice):

@@ -4,8 +4,14 @@ from tiles.community_chest_tile import CommunityChestTile
 from tiles.ownable_tile import OwnableTile
 from tiles.tax_tile import TaxTile
 
+from ui.label import Label
+from ui.button_array import ButtonArray
+
+from ui.piece import BoardPiece
+
 
 from player import Player
+from timers import Timer
 
 class Monopoly:
     MAKE_PLAYER_COUNT = 0
@@ -13,10 +19,8 @@ class Monopoly:
     MAKE_NAME_SELECTION = 2
     NAME_SELCTION = 3
     CREATE_PLAYER_CARDS = 4
-    ROLLING_DICE = 5
-    TIMER = 6
-    OPEN_MENU = 7
-    BUYING = 8
+    PLAYING_GAME = 5
+    GAME_OVER = 6
 
     def __init__(self) -> None:
         self.game_over = False
@@ -27,13 +31,18 @@ class Monopoly:
         self.state = Monopoly.MAKE_PLAYER_COUNT
 
         self.players = []
-        self.current_player_index = 0
+        self.current_player_index = -1
 
         self.num_players = -1
         self.num_bankrupt = 0
 
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
+
+        self.move_timer = Timer(100, self.movePlayer)
+
+        self.current_player_label = Label(" ", 599, 26)
+        self.dice_label = Label(" ", 100, 300)
 
         self.board = [
             None,
@@ -95,8 +104,43 @@ class Monopoly:
 
     def createPlayers(self):
         for x, name in enumerate(self.player_names):
-           self.players.append(Player(name, x + 1))
+           player = Player(name, x)
+           self.players.append(player)
+           BoardPiece(player)
 
+    def movePlayer(self, spaces):
+        player = self.players[self.current_player_index]
+        player.position += 1
+        spaces -= 1
+
+        if player.position >= 40:
+            player.position -= 40
+            player.money += 200
+        
+        if spaces > 0:
+            self.move_timer.setArgument(spaces)
+            self.move_timer.beginTicking()
+        else:
+            #This will eventually be the section after moving the player
+            self.startNextTurn()
+
+    def startNextTurn(self):
+        self.current_player_index += 1
+        if self.current_player_index > self.num_players - 1:
+            self.current_player_index = 0
+
+        self.current_player_label.setText(f"{self.players[self.current_player_index].name}'s Turn")
+        self.rollDicePrompt()
+
+    def rollDicePrompt(self):
+        ButtonArray("Roll the Dice!", [["Roll!", None]], self.rollDiceClicked)
+
+    def rollDiceClicked(self):
+        self.rollDice()
+        self.dice_label.setText(f"D1 {self.dice_1.value} D2 {self.dice_2.value}")
+        self.movePlayer(Dice.total)
+
+    #---------------------------------------------#
 
     def rollDice(self):
         Dice.roll_all()
@@ -115,7 +159,7 @@ class Monopoly:
     def freePlayer(self, player: Player):
         player.is_jailed = False
 
-    def movePlayer(self, player: Player, amount):
+    def movePlayerDEPRICATED(self, player: Player, amount):
         player.position += amount
 
         #Checks for passing go and awards money
