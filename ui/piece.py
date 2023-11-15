@@ -20,8 +20,8 @@ class BoardPiece:
             self.positions.append((position[0] + width_change, position[1] + height_change))
 
         #Position the player will occupy if they are jailed
-        jail_positions = [(248, 688), (248, 720), (274, 746), (310, 746)]
-        self.jail_position = jail_positions[self.player.number]
+        not_jail_positions = [(248, 688), (248, 720), (274, 746), (310, 746)]
+        self.not_jail_position = not_jail_positions[self.player.number]
 
         self.square = pygame.Surface((20, 20))
         self.square.fill(player.color)
@@ -37,8 +37,11 @@ class BoardPiece:
 
     def render(self, screen: pygame.surface.Surface):
         if not self.player.is_jailed:
-            self.square_rect.center = self.positions[self.player.position]
+            if self.player.position == 10:
+                self.square_rect.center = self.not_jail_position
+            else:
+                self.square_rect.center = self.positions[self.player.position]
         else:
-            self.square_rect.center = self.jail_position
+            self.square_rect.center = self.positions[self.player.position]
 
         screen.blit(self.square, self.square_rect)

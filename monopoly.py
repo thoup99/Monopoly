@@ -40,9 +40,12 @@ class Monopoly:
         self.dice_2 = Dice(6)
 
         self.move_timer = Timer(100, self.movePlayer)
+        self.land_on_space_timer = Timer(500, self.checkPositionOnBoard)
+        self.position_outcome_timer = Timer(2000, self.endTurnChecks)
 
         self.current_player_label = Label(" ", 599, 26)
         self.dice_label = Label(" ", 100, 300)
+        self.position_outcome_label = Label(" ", 599, 126, 50)
 
         self.board = [
             None,
@@ -122,12 +125,20 @@ class Monopoly:
             self.move_timer.beginTicking()
         else:
             #This will eventually be the section after moving the player
-            self.startNextTurn()
+            self.land_on_space_timer.beginTicking()
+            #self.startNextTurn()
 
     def startNextTurn(self):
-        self.current_player_index += 1
-        if self.current_player_index > self.num_players - 1:
-            self.current_player_index = 0
+        while True:
+            self.current_player_index += 1
+
+            if self.current_player_index > self.num_players - 1:
+                self.current_player_index = 0
+
+            if not self.players[self.current_player_index].is_bankrupt:
+                break
+
+        self.players[self.current_player_index].doubles_rolled = 0
 
         self.current_player_label.setText(f"{self.players[self.current_player_index].name}'s Turn")
         self.rollDicePrompt()
@@ -138,7 +149,107 @@ class Monopoly:
     def rollDiceClicked(self):
         self.rollDice()
         self.dice_label.setText(f"D1 {self.dice_1.value} D2 {self.dice_2.value}")
+        player = self.players[self.current_player_index]
+
+        if self.dice_1 == self.dice_2:
+            player.doubles_rolled += 1
+
+            if player.is_jailed:
+                self.freePlayer(player)
+
+            if player.doubles_rolled == 3:
+                self.jailPlayer(player)
+
+        if player.is_jailed:
+            player.turns_jailed += 1
+
+            if player.turns_jailed == 3:
+                self.freePlayer(player)
+
+
         self.movePlayer(Dice.total)
+
+    def checkPositionOnBoard(self):
+        player = self.players[self.current_player_index]
+
+        tile = self.board[player.position]
+        if isinstance(tile, OwnableTile):
+
+            #Tile has no owner
+            if tile.isOwned() == False:
+                if player.money > tile.cost:
+                    ButtonArray(f"Would you like to purchase {tile.name} for ${tile.cost}?", [["Yes", True], ["No", False]], self.purchaseDecision)
+                else:
+                    self.position_outcome_label.setText(f"{player.name} Can not afford to purchase {tile.name} for {tile.cost}")
+                    self.position_outcome_timer.beginTicking()
+            
+            #Tile has an owner
+            elif tile.owner != player:
+                rent = tile.determineRent()
+                player.money -= rent
+
+                #Adjust the cost of rent if the player goes bankrupt
+                if player.money < 0:
+                    rent += player.money 
+
+                tile.owner.money += rent
+
+                self.position_outcome_label.setText(f"{player.name} paid {tile.owner.name} ${rent} in rent for landing on {tile.name}.")
+                self.position_outcome_timer.beginTicking()
+
+            elif tile.owner == player:
+                self.position_outcome_label.setText(f"{player.name} landed on their own property! No rent is due.")
+                self.position_outcome_timer.beginTicking()
+
+        elif isinstance(tile, ChanceTile):
+            tile.grabRandomCard(player)
+
+        elif isinstance(tile, CommunityChestTile):
+            tile.grabRandomCard(player)
+
+        elif isinstance(tile, TaxTile):
+            tile.chargeTax(player)
+
+        elif player.position == 30:
+            self.jailPlayer(player)
+
+        else:
+            self.endTurnChecks()
+
+    def hidePositionOutcomeLabel(self):
+        self.position_outcome_label.setText(" ")
+
+    def purchaseDecision(self, is_purchasing: bool):
+        player = self.players[self.current_player_index]
+        tile = self.board[player.position]
+
+        if is_purchasing:
+            tile.setOwner(player)
+            player.money -= tile.cost
+
+            self.position_outcome_label.setText(f"{player.name} has purchased {tile.name}!")
+            self.position_outcome_timer.beginTicking()
+        else:
+            self.position_outcome_label.setText(f"{player.name} decided not to purchase {tile.name}.")
+            self.position_outcome_timer.beginTicking()
+
+
+    def endTurnChecks(self):
+        self.hidePositionOutcomeLabel()
+        #Check if bankrupt
+        player = self.players[self.current_player_index]
+        if self.checkIfPlayerBankrupt(player):
+            self.num_bankrupt += 1
+            player.is_bankrupt = True
+            self.transferPlayerBelongings(player)
+
+        #Check for doubles
+        if not player.is_bankrupt:
+            if self.dice_1 == self.dice_2:
+                self.rollDicePrompt()
+                return
+        
+        self.startNextTurn()
 
     #---------------------------------------------#
 
@@ -158,14 +269,8 @@ class Monopoly:
 
     def freePlayer(self, player: Player):
         player.is_jailed = False
+        player.turns_jailed == 0
 
-    def movePlayerDEPRICATED(self, player: Player, amount):
-        player.position += amount
-
-        #Checks for passing go and awards money
-        if player.position >= 40:
-            player.position -= 40
-            player.money += 200
 
     def transferPlayerBelongings(self, player: Player):
         tile = self.board[player.position]
@@ -175,50 +280,7 @@ class Monopoly:
                 property.setOwner(player)
 
     def checkIfPlayerBankrupt(self, player: Player):
-        if player.money < 0:
-            print("less than 0")
-            player.is_bankrupt = True
-            self.num_bankrupt
-            self.transferPlayerBelongings(player)
-            return True
-        return False
-
-    def checkPositionOnBoard(self, player: Player):
-        tile = self.board[player.position]
-        if isinstance(tile, OwnableTile):
-
-            #Tile has no owner
-            if tile.isOwned() == False:
-                if player.money > tile.cost:
-                    answer = input(f"Would you like to purchase {tile.name} for {tile.cost}?")
-                    if answer == "y":
-                        tile.setOwner(player)
-                        player.money -= tile.cost
-                    else:
-                        print(f"You gave up on purchasing {tile.name}")
-                else:
-                    print(f"{player.name} Can not afford to purchase {tile.name} for {tile.cost}")
-            
-            #Tile has an owner
-            elif tile.owner != player:
-                #Does not account for the player going into negatives while paying
-                rent = tile.determineRent()
-                print("Pay rent monkey boy")
-                print(f"{player} paid {tile.owner} ${rent} in rent for landing on {tile.name}.")
-                tile.owner.money += rent
-                player.money -= rent
-
-        elif isinstance(tile, ChanceTile):
-            tile.grabRandomCard(player)
-
-        elif isinstance(tile, CommunityChestTile):
-            tile.grabRandomCard(player)
-
-        elif isinstance(tile, TaxTile):
-            tile.chargeTax(player)
-
-        else:
-            print("Corner Tile")
+        return player.money < 0
 
     def doOneTurn(self):
         #Check for gameover

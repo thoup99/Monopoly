@@ -12,6 +12,7 @@ class Player:
         self.turns_jailed = 0
         self.is_bankrupt = False
 
+        self.doubles_rolled = 0
+
         colors = [(199, 54, 54), (247, 106, 12), (67, 166, 40), (40, 69, 166)]
         self.color = colors[number]
-        print(number)

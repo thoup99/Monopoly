@@ -3,7 +3,7 @@ from renderer import Renderer
 from ui.button import Button
 
 class ButtonArray:
-    font = pygame.font.SysFont('Arial', 60)
+    font = pygame.font.SysFont('Arial', 40)
 
     def __init__(self, text: str, options, callback) -> None:
         self.callback = callback

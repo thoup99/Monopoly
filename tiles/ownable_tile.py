@@ -36,9 +36,10 @@ class OwnableTile:
     
     def setOwner(self, player : Player):
         if self.isOwned():
-            self.owner.propery.pop(self)
+            self.owner.propery.remove(self)
             
         self.owner = player
+        self.owned = True
         player.propery.append(self)
 
     def determineRent(self):
