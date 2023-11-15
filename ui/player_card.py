@@ -9,8 +9,9 @@ class PlayerCard:
         self.x = 20
         self.y = 40 + 40 * player.number
         self.player = player
+
         Renderer.elements.append(self)
 
     def render(self, screen: pygame.surface.Surface):
-        text_surface = PlayerCard.font.render(f"{self.player.name}: ${self.player.money}", True, (255,255,255))
+        text_surface = PlayerCard.font.render(f"{self.player.name}: ${self.player.money}", True, self.player.color)
         screen.blit(text_surface, (self.x, self.y))

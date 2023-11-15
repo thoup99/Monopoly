@@ -11,6 +11,7 @@ from ui.board import Board
 from ui.entrybox import EntryBox
 from ui.button_array import ButtonArray
 from ui.label import Label
+from ui.colored_rectangle import ColoredRectangle
 
 def check_keys(key, unicode):
     match (key):
@@ -38,6 +39,7 @@ pygame.display.set_caption("Monopoly")
 
 renderer = Renderer(canvas)
 Board(SCREEN_WIDTH, SCREEN_HEIGHT)
+ColoredRectangle((120, 117), 220, 162, (191, 191, 191))
 
 monopoly = Monopoly()
 
