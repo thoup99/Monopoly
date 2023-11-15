@@ -203,15 +203,19 @@ class Monopoly:
 
         elif isinstance(tile, ChanceTile):
             tile.grabRandomCard(player)
+            self.endTurnChecks()
 
         elif isinstance(tile, CommunityChestTile):
             tile.grabRandomCard(player)
+            self.endTurnChecks()
 
         elif isinstance(tile, TaxTile):
             tile.chargeTax(player)
+            self.endTurnChecks()
 
         elif player.position == 30:
             self.jailPlayer(player)
+            self.endTurnChecks()
 
         else:
             self.endTurnChecks()
