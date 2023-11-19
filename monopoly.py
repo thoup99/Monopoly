@@ -5,6 +5,7 @@ from tiles.ownable_tile import OwnableTile
 from tiles.tax_tile import TaxTile
 
 from ui.label import Label
+from ui.background_label import BackgroundLabel
 from ui.button_array import ButtonArray
 
 from ui.piece import BoardPiece
@@ -45,7 +46,7 @@ class Monopoly:
 
         self.current_player_label = Label(" ", 599, 26)
         self.dice_label = Label(" ", 100, 300)
-        self.position_outcome_label = Label(" ", 599, 126, 50,)
+        self.position_outcome_label = BackgroundLabel(" ", 599, 126, 50, alpha= 140)
         
 
         self.board = [

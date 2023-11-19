@@ -22,6 +22,12 @@ class Label:
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.centerx, self.text_rect.centery = self.center_x, self.center_y
 
+    def getWidth(self):
+        return self.text_rect.width
+
+    def getHeight(self):
+        return self.text_rect.height
+
     def __del__(self):
         print("Deleting Label")
 

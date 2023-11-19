@@ -2,7 +2,7 @@ import pygame
 from renderer import Renderer
 
 class ColoredRectangle:
-    def __init__(self, center, width, height, color, alpha = 255) -> None:
+    def __init__(self, center, width = 0, height = 0, color = (0, 0, 0), alpha = 255) -> None:
         self.color = color
         self.center = center
         self.alpha = alpha
