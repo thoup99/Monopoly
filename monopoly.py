@@ -45,7 +45,8 @@ class Monopoly:
 
         self.current_player_label = Label(" ", 599, 26)
         self.dice_label = Label(" ", 100, 300)
-        self.position_outcome_label = Label(" ", 599, 126, 50)
+        self.position_outcome_label = Label(" ", 599, 126, 50,)
+        
 
         self.board = [
             None,
