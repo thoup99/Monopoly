@@ -42,6 +42,10 @@ class OwnableTile:
         self.owned = True
         player.propery.append(self)
 
+    def removeOwner(self):
+        self.owner = None
+        self.owned = False
+
     def determineRent(self):
         amount_owned = 0
         for tile in OwnableTile.groups[self.group]:

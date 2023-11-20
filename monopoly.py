@@ -204,12 +204,14 @@ class Monopoly:
                 self.position_outcome_timer.beginTicking()
 
         elif isinstance(tile, ChanceTile):
-            tile.grabRandomCard(player)
-            self.endTurnChecks()
+            text = tile.grabRandomCard(player)
+            self.position_outcome_label.setText(text)
+            self.position_outcome_timer.beginTicking()
 
         elif isinstance(tile, CommunityChestTile):
-            tile.grabRandomCard(player)
-            self.endTurnChecks()
+            text = tile.grabRandomCard(player)
+            self.position_outcome_label.setText(text)
+            self.position_outcome_timer.beginTicking()
 
         elif isinstance(tile, TaxTile):
             tile.chargeTax(player)
@@ -247,7 +249,12 @@ class Monopoly:
         if self.checkIfPlayerBankrupt(player):
             self.num_bankrupt += 1
             player.is_bankrupt = True
-            self.transferPlayerBelongings(player)
+
+            tile = self.board[self.players[self.current_player_index].position]
+            if isinstance(tile, OwnableTile):
+                self.transferPlayerBelongings(player)
+            else:
+                self.removePlayerOwnership(player)
 
         #Check for doubles
         if not player.is_bankrupt:
@@ -284,6 +291,10 @@ class Monopoly:
             #Transfers all property
             for property in player.propery:
                 property.setOwner(player)
+
+    def removePlayerOwnership(self, player: Player):
+        for property in player.propery:
+            property.removeOwner()
 
     def checkIfPlayerBankrupt(self, player: Player):
         return player.money < 0
