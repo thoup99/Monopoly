@@ -44,7 +44,7 @@ class Monopoly:
         self.land_on_space_timer = Timer(500, self.checkPositionOnBoard)
         self.position_outcome_timer = Timer(2000, self.endTurnChecks)
 
-        self.current_player_label = Label(" ", 599, 26)
+        self.current_player_label = BackgroundLabel(" ", 599, 19, alpha= 180)
         self.dice_label = Label(" ", 100, 300)
         self.position_outcome_label = BackgroundLabel(" ", 599, 126, 50, alpha= 140)
         
