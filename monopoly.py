@@ -1,4 +1,5 @@
 from dice import Dice
+
 from tiles.chance_tile import ChanceTile
 from tiles.community_chest_tile import CommunityChestTile
 from tiles.ownable_tile import OwnableTile
@@ -7,6 +8,7 @@ from tiles.tax_tile import TaxTile
 from ui.label import Label
 from ui.background_label import BackgroundLabel
 from ui.button_array import ButtonArray
+from ui.image import Image
 
 from ui.piece import BoardPiece
 
@@ -41,12 +43,14 @@ class Monopoly:
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
 
+        self.dice_1_image = Image("./images/dice0.png", 71, 256)
+        self.dice_2_image = Image("./images/dice0.png", 171, 256)
+
         self.move_timer = Timer(100, self.movePlayer)
         self.land_on_space_timer = Timer(500, self.checkPositionOnBoard)
         self.position_outcome_timer = Timer(2000, self.endTurnChecks)
 
         self.current_player_label = BackgroundLabel(" ", 599, 19, alpha= 180)
-        self.dice_label = Label(" ", 100, 300)
         self.position_outcome_label = BackgroundLabel(" ", 599, 126, 50, alpha= 140)
         
 
@@ -160,7 +164,7 @@ class Monopoly:
 
     def rollDiceClicked(self):
         self.rollDice()
-        self.dice_label.setText(f"D1 {self.dice_1.value} D2 {self.dice_2.value}")
+        self.updateDiceUI()
         player = self.players[self.current_player_index]
 
         if self.dice_1 == self.dice_2:
@@ -180,6 +184,10 @@ class Monopoly:
 
 
         self.movePlayer(Dice.total)
+
+    def updateDiceUI(self):
+        self.dice_1_image.loadNewImage(f"./images/dice{self.dice_1.value}.png")
+        self.dice_2_image.loadNewImage(f"./images/dice{self.dice_2.value}.png")
 
     def checkPositionOnBoard(self):
         player = self.players[self.current_player_index]
