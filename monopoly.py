@@ -60,7 +60,7 @@ class Monopoly:
             OwnableTile("Oriental Avenue", "Light Blue", 100, [6, 30, 90, 270, 400, 550], 50, 50),
             ChanceTile(),
             OwnableTile("Vermont Avenue", "Light Blue", 100, [6, 30, 90, 270, 400, 550], 50, 50),
-            OwnableTile("Oriental Avenue", "Light Blue", 120, [4, 100, 300, 450, 600], 50, 60),
+            OwnableTile("Connecticut Avenue", "Light Blue", 120, [4, 100, 300, 450, 600], 50, 60),
             None,
             OwnableTile("St. Charles Place", "Pink", 140, [10, 50, 150, 450, 625, 750], 100, 70),
             OwnableTile("Electric Company", "Utility", 150, [], -1, 75, is_standard_property = False),
