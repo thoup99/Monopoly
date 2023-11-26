@@ -10,8 +10,9 @@ from ui.player_card import PlayerCard
 from ui.board import Board
 from ui.entrybox import EntryBox
 from ui.button_array import ButtonArray
-from ui.label import Label
 from ui.colored_rectangle import ColoredRectangle
+
+from tiles.ownable_tile import OwnableTile
 
 def check_keys(key, unicode):
     match (key):
@@ -42,17 +43,6 @@ Board(SCREEN_WIDTH, SCREEN_HEIGHT)
 ColoredRectangle((120, 117), 220, 162, (191, 191, 191))
 
 monopoly = Monopoly()
-
-#-----Mouse Position Debug-----#
-
-l = Label("Mouse: ", 100, 270)
-
-def setLabelText(pos):
-    l.setText(f"Mouse: {pos}")
-
-Input.subscribe(pygame.MOUSEMOTION, setLabelText)
-
-#-----Mouse Position Debug-----#
 
 #-----Click Recorder Debug-----#
 
@@ -89,6 +79,39 @@ Input.subscribe(pygame.KEYDOWN, handleRecordInput)
 
 #-----Click Recorder Debug-----#
 
+
+#-----Cheats Debug-----#
+
+cheats_on = False
+
+def handleCheatInputs(key, unicode):
+    global monopoly, cheats_on
+
+    if key == pygame.K_RIGHTBRACKET:
+        cheats_on = not cheats_on
+        print(f"Cheats Toggled. Set to {cheats_on}.")
+    
+    if cheats_on:
+        if key == pygame.K_1:
+            for player in monopoly.players:
+                if player.number != monopoly.current_player_index:
+                    player.money = 0
+            print("Set money to zero for all players except current.")
+
+        if key == pygame.K_2:
+            for tile in monopoly.board:
+                if isinstance(tile, OwnableTile):
+                    tile.setOwner(monopoly.players[monopoly.current_player_index])
+            print("Gave all property to the current player.")
+            
+        if key == pygame.K_3:
+            monopoly.players[monopoly.current_player_index].money += 1000
+            print("Gave 1k to the current player.")
+
+Input.subscribe(pygame.KEYDOWN, handleCheatInputs)
+
+#-----Cheats Debug-----#
+
 running = True
 clock = pygame.time.Clock()
 fps = 30
@@ -116,7 +139,8 @@ while running:
             monopoly.startNextTurn()
 
 
-    if monopoly.game_over:
+    if monopoly.done:
         running = False
+        close_game()
 
     renderer.renderAll()

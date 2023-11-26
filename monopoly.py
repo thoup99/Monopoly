@@ -26,6 +26,7 @@ class Monopoly:
     def __init__(self) -> None:
         self.game_over = False
         self.winner = None
+        self.done = False
 
         self.player_names = []
 
@@ -143,7 +144,16 @@ class Monopoly:
         self.players[self.current_player_index].doubles_rolled = 0
 
         self.current_player_label.setText(f"{self.players[self.current_player_index].name}'s Turn")
-        self.rollDicePrompt()
+
+        #Free a player with a get out of jail free card
+        if self.players[self.current_player_index].is_jailed and self.players[self.current_player_index].get_out_of_jail_free:
+            self.freePlayer(self.players[self.current_player_index])
+
+        if self.game_over:
+            self.createGameOverCard()
+
+        else:
+            self.rollDicePrompt()
 
     def rollDicePrompt(self):
         ButtonArray("Roll the Dice!", [["Roll!", None]], self.rollDiceClicked)
@@ -261,8 +271,20 @@ class Monopoly:
             if self.dice_1 == self.dice_2:
                 self.rollDicePrompt()
                 return
+            
+        self.checkForGameOver()
         
         self.startNextTurn()
+
+    def checkForGameOver(self):
+        if self.num_bankrupt == self.num_players - 1:
+            self.game_over = True
+
+    def setDoneTrue(self):
+        self.done = True
+
+    def createGameOverCard(self):
+        ButtonArray(f"{self.players[self.current_player_index].name} won the game!", [["Exit", None]], self.setDoneTrue)
 
     #---------------------------------------------#
 
@@ -298,57 +320,3 @@ class Monopoly:
 
     def checkIfPlayerBankrupt(self, player: Player):
         return player.money < 0
-
-    def doOneTurn(self):
-        #Check for gameover
-        if self.num_players - self.num_bankrupt == 1:
-            for player in self.players:
-                if not player.is_bankrupt:
-                    self.winner = player
-                    self.game_over = True
-                    print(f"{self.winner} Won the Game!")
-                    return
-                
-        #If the current player is bankrupt go to the next one
-        current_player = self.players[self.current_player_index]
-        while current_player.is_bankrupt == True:
-            self.incrementCurrentPlayer()
-            current_player = self.players[self.current_player_index]
-
-        doubles_rolled = 0
-        loop_again = True
-
-        #Loops while player rolls doubles
-        while loop_again:
-            loop_again = False
-            Dice.roll_all()
-            print(f"{current_player.name} rolled a {Dice.total}!")
-
-            # Handles doubles
-            if self.dice_1 == self.dice_2:
-                loop_again = True
-                doubles_rolled += 1
-
-                #Frees player if jailed
-                if current_player.is_jailed:
-                    self.freePlayer(current_player)
-
-                #Jails player if they roll 3 doubles in one turn
-                if doubles_rolled == 3:
-                    self.jailPlayer(current_player)
-                    break
-
-            #Since after each double you are allowed to purchase property all logic for that must remain inside this loop
-            print("Moving player")
-            self.movePlayer(current_player, self.dice_1.value + self.dice_2.value)
-
-            print("checking position")
-            self.checkPositionOnBoard(current_player)
-
-            print("checking for bankrupt")
-            print(f"{current_player.name}: {current_player.money}")
-            if self.checkIfPlayerBankrupt(current_player):
-                print(f"{current_player.name} has gone bankrupt!")
-                break
-            print("Done")
-        self.incrementCurrentPlayer()
