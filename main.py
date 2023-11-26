@@ -7,7 +7,7 @@ import sys
 from monopoly import Monopoly
 from renderer import Renderer
 from ui.player_card import PlayerCard
-from ui.board import Board
+from ui.image import Image
 from ui.entrybox import EntryBox
 from ui.button_array import ButtonArray
 from ui.colored_rectangle import ColoredRectangle
@@ -39,7 +39,8 @@ pygame.display.set_caption("Monopoly")
 
 
 renderer = Renderer(canvas)
-Board(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+Image("./images/board.png", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 ColoredRectangle((120, 117), 220, 162, (191, 191, 191))
 
 monopoly = Monopoly()

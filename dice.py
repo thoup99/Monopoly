@@ -7,7 +7,7 @@ class Dice:
     def __init__(self, sides) -> None:
         Dice.all_dice.append(self)
         self.sides = sides
-        self.value = 1
+        self.value = 0
 
     def roll(self) -> int:
         self.value = random.randint(1, self.sides)
