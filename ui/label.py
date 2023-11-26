@@ -6,6 +6,7 @@ class Label:
 
         self.font = pygame.font.SysFont('Arial', font_size)
 
+        self.text = text
         self.color = color
 
         self.center_x = center_x
@@ -18,7 +19,15 @@ class Label:
         Renderer.addElement(self)
 
     def setText(self, newText):
-        self.text_surface = self.font.render(newText, True, self.color)
+        self.text = newText
+        self.rerenderText()
+    
+    def setColor(self, newColor):
+        self.color = newColor
+        self.rerenderText()
+
+    def rerenderText(self):
+        self.text_surface = self.font.render(self.text, True, self.color)
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.centerx, self.text_rect.centery = self.center_x, self.center_y
 

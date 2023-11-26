@@ -36,6 +36,7 @@ class Monopoly:
 
         self.players = []
         self.current_player_index = -1
+        self.current_player = Player("Null", 0)
 
         self.num_players = -1
         self.num_bankrupt = 0
@@ -45,6 +46,9 @@ class Monopoly:
 
         self.dice_1_image = Image("./images/dice0.png", 71, 256)
         self.dice_2_image = Image("./images/dice0.png", 171, 256)
+
+        self.doubles_label = Label("", 121, 316, font_size= 50)
+        self.doubles_label_colors = [(237, 193, 36), (240, 111, 12), (224, 37, 20), (255, 255, 255)]
 
         self.move_timer = Timer(100, self.movePlayer)
         self.land_on_space_timer = Timer(500, self.checkPositionOnBoard)
@@ -131,9 +135,7 @@ class Monopoly:
             self.move_timer.setArgument(spaces)
             self.move_timer.beginTicking()
         else:
-            #This will eventually be the section after moving the player
             self.land_on_space_timer.beginTicking()
-            #self.startNextTurn()
 
     def startNextTurn(self):
         while True:
@@ -145,13 +147,15 @@ class Monopoly:
             if not self.players[self.current_player_index].is_bankrupt:
                 break
 
-        self.players[self.current_player_index].doubles_rolled = 0
+        self.current_player = self.players[self.current_player_index]
 
-        self.current_player_label.setText(f"{self.players[self.current_player_index].name}'s Turn")
+        self.current_player.doubles_rolled = 0
+
+        self.current_player_label.setText(f"{self.current_player.name}'s Turn")
 
         #Free a player with a get out of jail free card
-        if self.players[self.current_player_index].is_jailed and self.players[self.current_player_index].get_out_of_jail_free:
-            self.freePlayer(self.players[self.current_player_index])
+        if self.current_player.is_jailed and self.current_player.get_out_of_jail_free:
+            self.freePlayer(self.current_player)
 
         if self.game_over:
             self.createGameOverCard()
@@ -164,7 +168,6 @@ class Monopoly:
 
     def rollDiceClicked(self):
         self.rollDice()
-        self.updateDiceUI()
         player = self.players[self.current_player_index]
 
         if self.dice_1 == self.dice_2:
@@ -182,12 +185,18 @@ class Monopoly:
             if player.turns_jailed == 3:
                 self.freePlayer(player)
 
-
+        self.updateDiceUI()
         self.movePlayer(Dice.total)
 
     def updateDiceUI(self):
         self.dice_1_image.loadNewImage(f"./images/dice{self.dice_1.value}.png")
         self.dice_2_image.loadNewImage(f"./images/dice{self.dice_2.value}.png")
+
+        if self.dice_1 == self.dice_2:
+            self.doubles_label.setText("Doubles!")
+            self.doubles_label.setColor(self.doubles_label_colors[self.current_player.doubles_rolled - 1])
+        else:
+            self.doubles_label.setText("")
 
     def checkPositionOnBoard(self):
         player = self.players[self.current_player_index]
