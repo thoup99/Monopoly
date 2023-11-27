@@ -8,7 +8,7 @@ from tiles.tax_tile import TaxTile
 from ui.label import Label
 from ui.background_label import BackgroundLabel
 from ui.button_array import ButtonArray
-from ui.image import Image
+from ui.sprite import Sprite
 
 from ui.piece import BoardPiece
 
@@ -44,8 +44,18 @@ class Monopoly:
         self.dice_1 = Dice(6)
         self.dice_2 = Dice(6)
 
-        self.dice_1_image = Image("./images/dice0.png", 71, 256)
-        self.dice_2_image = Image("./images/dice0.png", 171, 256)
+        dice_image_paths = [
+            "./images/dice0.png",
+            "./images/dice1.png",
+            "./images/dice2.png",
+            "./images/dice3.png",
+            "./images/dice4.png",
+            "./images/dice5.png",
+            "./images/dice6.png"
+        ]
+
+        self.dice_1_sprite = Sprite(71, 256, dice_image_paths)
+        self.dice_2_sprite = Sprite(171, 256, dice_image_paths)
 
         self.doubles_label = Label("", 121, 316, font_size= 50)
         self.doubles_label_colors = [(237, 193, 36), (240, 111, 12), (224, 37, 20), (255, 255, 255)]
@@ -189,8 +199,8 @@ class Monopoly:
         self.movePlayer(Dice.total)
 
     def updateDiceUI(self):
-        self.dice_1_image.loadNewImage(f"./images/dice{self.dice_1.value}.png")
-        self.dice_2_image.loadNewImage(f"./images/dice{self.dice_2.value}.png")
+        self.dice_1_sprite.setIndex(self.dice_1.value)
+        self.dice_2_sprite.setIndex(self.dice_2.value)
 
         if self.dice_1 == self.dice_2:
             self.doubles_label.setText("Doubles!")

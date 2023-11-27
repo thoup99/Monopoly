@@ -11,8 +11,11 @@ class Image:
 
         Renderer.elements.append(self)
 
-    def loadNewImage(self, path):
+    def loadImageFromPath(self, path):
         self.image = pygame.image.load(path)
+
+    def setImage(self, image):
+        self.image = image
 
     def render(self, screen: pygame.surface.Surface):
         screen.blit(self.image, self.rect)
