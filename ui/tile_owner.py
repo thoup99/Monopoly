@@ -7,9 +7,10 @@ class TileOwner:
         self.tile = ownable_tile
 
         self.background = ColoredRectangle(position, 19, 19, (0, 0, 0))
+        self.foreground = ColoredRectangle(position, 15, 15, (255, 255, 255))
 
+    def update(self):
         if self.tile.owned:
-            self.foreground = ColoredRectangle(position, 15, 15, self.tile.owner.color)
+            self.foreground.setColor(self.tile.owner.color)
         else:
-            self.foreground = ColoredRectangle(position, 15, 15, (255, 255, 255))
-
+            self.foreground.setColor((255, 255, 255))

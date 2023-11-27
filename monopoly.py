@@ -111,10 +111,12 @@ class Monopoly:
             OwnableTile("Boardwalk", "Dark Blue", 400, [50, 200, 600, 1400, 1700, 2000], 200, 200)
         ]
 
+        self.tile_owners = []
+
         base_positions = [(913, 712), (835, 722), (774, 720), (717, 724), (658, 715), (599, 716), (538, 720), (483, 716), (422, 722), (364, 726), (297, 699), (279, 635), (281, 575), (278, 518), (277, 459), (283, 396), (281, 340), (281, 282), (282, 224), (282, 164), (281, 87), (363, 73), (421, 75), (481, 72), (540, 71), (599, 76), (658, 73), (715, 73), (778, 75), (837, 71), (915, 79), (922, 162), (921, 219), (919, 277), (922, 339), (921, 398), (919, 458), (924, 517), (920, 577), (923, 637)]
         for index, tile in enumerate(self.board):
             if isinstance(tile, OwnableTile):
-                TileOwner(tile, base_positions[index])
+                self.tile_owners.append(TileOwner(tile, base_positions[index]))
     
     def setState(self, state):
         self.state = state
@@ -276,6 +278,7 @@ class Monopoly:
         if is_purchasing:
             tile.setOwner(player)
             player.money -= tile.cost
+            self.updateTileOwners()
 
             self.position_outcome_label.setText(f"{player.name} has purchased {tile.name}!")
             self.position_outcome_timer.beginTicking()
@@ -283,9 +286,13 @@ class Monopoly:
             self.position_outcome_label.setText(f"{player.name} decided not to purchase {tile.name}.")
             self.position_outcome_timer.beginTicking()
 
+    def updateTileOwners(self):
+        for tile_owner in self.tile_owners:
+            tile_owner.update()
 
     def endTurnChecks(self):
         self.hidePositionOutcomeLabel()
+
         #Check if bankrupt
         player = self.players[self.current_player_index]
         if self.checkIfPlayerBankrupt(player):
@@ -297,6 +304,8 @@ class Monopoly:
                 self.transferPlayerBelongings(player)
             else:
                 self.removePlayerOwnership(player)
+
+            self.updateTileOwners()       
 
         #Check for doubles
         if not player.is_bankrupt:
