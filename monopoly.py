@@ -11,7 +11,7 @@ from ui.button_array import ButtonArray
 from ui.sprite import Sprite
 
 from ui.piece import BoardPiece
-
+from ui.tile_owner import TileOwner
 
 from player import Player
 from timers import Timer
@@ -110,6 +110,11 @@ class Monopoly:
             TaxTile("Luxury Tax", 100),
             OwnableTile("Boardwalk", "Dark Blue", 400, [50, 200, 600, 1400, 1700, 2000], 200, 200)
         ]
+
+        base_positions = [(913, 712), (835, 722), (774, 720), (717, 724), (658, 715), (599, 716), (538, 720), (483, 716), (422, 722), (364, 726), (297, 699), (279, 635), (281, 575), (278, 518), (277, 459), (283, 396), (281, 340), (281, 282), (282, 224), (282, 164), (281, 87), (363, 73), (421, 75), (481, 72), (540, 71), (599, 76), (658, 73), (715, 73), (778, 75), (837, 71), (915, 79), (922, 162), (921, 219), (919, 277), (922, 339), (921, 398), (919, 458), (924, 517), (920, 577), (923, 637)]
+        for index, tile in enumerate(self.board):
+            if isinstance(tile, OwnableTile):
+                TileOwner(tile, base_positions[index])
     
     def setState(self, state):
         self.state = state
