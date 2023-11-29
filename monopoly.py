@@ -173,6 +173,7 @@ class Monopoly:
         #Free a player with a get out of jail free card
         if self.current_player.is_jailed and self.current_player.get_out_of_jail_free:
             self.freePlayer(self.current_player)
+            self.current_player.get_out_of_jail_free = False
 
         if self.game_over:
             self.createGameOverCard()
