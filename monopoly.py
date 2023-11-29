@@ -196,14 +196,20 @@ class Monopoly:
             if player.doubles_rolled == 3:
                 self.jailPlayer(player)
 
+        self.updateDiceUI()
+
         if player.is_jailed:
             player.turns_jailed += 1
 
             if player.turns_jailed == 3:
                 self.freePlayer(player)
+                self.movePlayer(Dice.total)
+            else:
+                self.position_outcome_label.setText(f"Doubles were not rolled. {player.name} has been jailed for {player.turns_jailed} turn(s).")
+                self.position_outcome_timer.beginTicking()
+        else:
+            self.movePlayer(Dice.total)
 
-        self.updateDiceUI()
-        self.movePlayer(Dice.total)
 
     def updateDiceUI(self):
         self.dice_1_sprite.setIndex(self.dice_1.value)

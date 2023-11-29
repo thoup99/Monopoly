@@ -109,6 +109,22 @@ def handleCheatInputs(key, unicode):
             monopoly.players[monopoly.current_player_index].money += 1000
             print("Gave 1k to the current player.")
 
+        if key == pygame.K_4:
+            index = monopoly.current_player_index + 1
+            if index == monopoly.num_players:
+                index = 0
+
+            monopoly.jailPlayer(monopoly.players[index])
+            print("Jailed the Next Player.")
+
+        if key == pygame.K_5:
+            index = monopoly.current_player_index + 1
+            if index == monopoly.num_players:
+                index = 0
+
+            monopoly.players[index].get_out_of_jail_free = True
+            print("Gave the Next Player a 'Get Out of Jail Free' Card.")
+
 Input.subscribe(pygame.KEYDOWN, handleCheatInputs)
 
 #-----Cheats Debug-----#
