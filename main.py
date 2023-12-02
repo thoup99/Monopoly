@@ -103,6 +103,7 @@ def handleCheatInputs(key, unicode):
             for tile in monopoly.board:
                 if isinstance(tile, OwnableTile):
                     tile.setOwner(monopoly.players[monopoly.current_player_index])
+            monopoly.updateTileOwners()
             print("Gave all property to the current player.")
             
         if key == pygame.K_3:
